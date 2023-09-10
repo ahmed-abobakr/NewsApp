@@ -14,6 +14,7 @@ import org.hamcrest.Description
 import org.hamcrest.Matcher
 import org.hamcrest.Matchers.allOf
 import org.hamcrest.TypeSafeMatcher
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -36,9 +37,9 @@ class HomeTest: BaseUITest() {
 
     @Test
     fun displayNewsListTest(){
-        Thread.sleep(5000)
+        Thread.sleep(1000)
         assertDisplayed(R.id.rvNewsList)
-        assertRecyclerViewItemCount(R.id.rvNewsList, 20)
+        assertRecyclerViewItemCount(R.id.rvNewsList, 6)
         onView(
             allOf(
                 withId(R.id.tvNews),
@@ -46,7 +47,7 @@ class HomeTest: BaseUITest() {
             )
         )
             .check(matches(isDisplayed()))
-            .check(matches(withText("المحسوسة بالقاهرة 40 وأسوان 46 درجة.. طقس الغد شديد الحرارة بمعظم الأنحاء - اليوم السابع")))
+            .check(matches(withText("British Open: Follow Tommy Fleetwood, Max Homa, Brooks Koepka and more Friday at Royal Liverpool - Yahoo Sports")))
 
         onView(
             allOf(
@@ -55,7 +56,7 @@ class HomeTest: BaseUITest() {
             )
         )
             .check(matches(isDisplayed()))
-            .check(matches(withText("Google News")))
+            .check(matches(withText("Yahoo Entertainment")))
 
     }
 

@@ -3,7 +3,6 @@ package com.ahmed.abobakr.newsapp.base
 import com.google.gson.Gson
 import kotlinx.coroutines.TimeoutCancellationException
 import retrofit2.HttpException
-import java.io.IOException
 import java.net.SocketTimeoutException
 
 open class BaseRepository {
