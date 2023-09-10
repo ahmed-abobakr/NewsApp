@@ -32,6 +32,7 @@ class TopArticlesAdapter(private val onArticleClick: (item: Article) -> Unit): L
                 article.urlToImage?.let { imgNews.setImageURI(Uri.parse(it)) }
                 tvNews.text = article.title
                 tvSource.text = article.source?.name
+                this.root.setOnClickListener { onArticleClick(article) }
             }
         }
     }

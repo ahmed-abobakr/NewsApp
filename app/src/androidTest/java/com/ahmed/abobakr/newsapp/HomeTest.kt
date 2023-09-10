@@ -14,12 +14,13 @@ import org.hamcrest.Description
 import org.hamcrest.Matcher
 import org.hamcrest.Matchers.allOf
 import org.hamcrest.TypeSafeMatcher
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
-class HomeTest {
+class HomeTest: BaseUITest() {
 
     val mActivityRule = ActivityScenarioRule(MainActivity::class.java)
         @Rule get
@@ -36,9 +37,9 @@ class HomeTest {
 
     @Test
     fun displayNewsListTest(){
-        Thread.sleep(5000)
+        Thread.sleep(1000)
         assertDisplayed(R.id.rvNewsList)
-        assertRecyclerViewItemCount(R.id.rvNewsList, 20)
+        assertRecyclerViewItemCount(R.id.rvNewsList, 6)
         onView(
             allOf(
                 withId(R.id.tvNews),
@@ -46,7 +47,7 @@ class HomeTest {
             )
         )
             .check(matches(isDisplayed()))
-            .check(matches(withText("المحسوسة بالقاهرة 40 وأسوان 46 درجة.. طقس الغد شديد الحرارة بمعظم الأنحاء - اليوم السابع")))
+            .check(matches(withText("British Open: Follow Tommy Fleetwood, Max Homa, Brooks Koepka and more Friday at Royal Liverpool - Yahoo Sports")))
 
         onView(
             allOf(
@@ -55,27 +56,11 @@ class HomeTest {
             )
         )
             .check(matches(isDisplayed()))
-            .check(matches(withText("Google News")))
+            .check(matches(withText("Yahoo Entertainment")))
 
     }
 
-    private fun nthChildOf(parentMatcher: Matcher<View>, childPosition: Int): Matcher<View> {
-        return object : TypeSafeMatcher<View>() {
-            override fun describeTo(description: Description) {
-                description.appendText("position $childPosition of parent ")
-                parentMatcher.describeTo(description)
-            }
 
-            public override fun matchesSafely(view: View): Boolean {
-                if (view.parent !is ViewGroup) return false
-                val parent = view.parent as ViewGroup
-
-                return (parentMatcher.matches(parent)
-                        && parent.childCount > childPosition
-                        && parent.getChildAt(childPosition) == view)
-            }
-        }
-    }
 
 
 }
