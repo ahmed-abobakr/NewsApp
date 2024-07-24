@@ -14,6 +14,7 @@ import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.times
 import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.whenever
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
@@ -43,7 +44,7 @@ class HomeViewModelTest {
         runBlocking {
             //Arrange
             val viewModel = HomeViewModel(repository)
-            viewModel.uiState.getValueForTest()
+            //viewModel.uiState.getValueForTest()
             //Act
             viewModel.getHeaderTopNews(1)
             //Assert
@@ -70,7 +71,8 @@ class HomeViewModelTest {
             //Act
             viewModel.getHeaderTopNews(1)
             //Assert
-            assertEquals(expected, viewModel.uiState.getValueForTest())
+            //assertEquals(expected, viewModel.uiState.getValueForTest())
+            assertEquals(expected, viewModel.uiState.first())
         }
     }
 
@@ -87,7 +89,8 @@ class HomeViewModelTest {
             //Act
             viewModel.getHeaderTopNews(1)
             //Assert
-            assertEquals(UiState.Error(exception.message ?: ""), viewModel.uiState.getValueForTest())
+            //assertEquals(UiState.Error(exception.message ?: ""), viewModel.uiState.getValueForTest())
+            assertEquals(UiState.Error(exception.message ?: ""), viewModel.uiState.first())
         }
     }
 

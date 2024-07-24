@@ -6,6 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ahmed.abobakr.newsapp.base.BaseFragment
@@ -14,6 +17,8 @@ import com.ahmed.abobakr.newsapp.databinding.FragmentHomeBinding
 import com.ahmed.abobakr.newsapp.home.view_models.HomeUiState
 import com.ahmed.abobakr.newsapp.home.view_models.HomeViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class HomeFragment: BaseFragment<HomeViewModel>() {
@@ -45,6 +50,7 @@ class HomeFragment: BaseFragment<HomeViewModel>() {
         binding.rvNewsList.adapter = adapter
 
         viewModel.getHeaderTopNews(page)
+
     }
 
     override fun render(state: UiState) {

@@ -4,6 +4,10 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
+import kotlinx.coroutines.launch
 
 abstract class BaseFragment<VM: BaseViewModel>: Fragment() {
 
@@ -12,7 +16,12 @@ abstract class BaseFragment<VM: BaseViewModel>: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.uiState.observe(viewLifecycleOwner){ baseRender(it)}
+        lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED)  {
+                viewModel.uiState.collect{ baseRender(it)}
+            }
+        }
+
     }
 
     private fun baseRender(state: UiState) {

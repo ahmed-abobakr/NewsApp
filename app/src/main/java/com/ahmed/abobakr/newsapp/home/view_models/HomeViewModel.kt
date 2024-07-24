@@ -2,26 +2,36 @@ package com.ahmed.abobakr.newsapp.home.view_models
 
 import androidx.lifecycle.viewModelScope
 import com.ahmed.abobakr.newsapp.base.BaseViewModel
+import com.ahmed.abobakr.newsapp.base.NetowrkException
 import com.ahmed.abobakr.newsapp.base.UiState
 import com.ahmed.abobakr.newsapp.home.data.HomeRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(private val repository: HomeRepository): BaseViewModel() {
 
+    //var topHeaderNewFlow: StateFlow<UiState>? = null
+
     fun getHeaderTopNews(page: Int){
-        uiState.value = UiState.Loading
+
+        //uiState.value = UiState.Loading
         viewModelScope.launch {
-            repository.getHeaderTopNews(page)
-                .catch {
-                    uiState.value = UiState.Error(it.message ?: "")
+
+            uiState = repository.getHeaderTopNews(page)
+                .map {
+                    HomeUiState.Success(it.articles) as UiState
+                }.catch {
+                    emit(UiState.Error(it.message ?: ""))
+
                 }
-                .collect {
-                uiState.value = HomeUiState.Success(it.articles)
-            }
+                .stateIn(
+                    scope = viewModelScope,
+                    initialValue = UiState.Loading,
+                    started = SharingStarted.WhileSubscribed(stopTimeoutMillis = 5000)
+                )
         }
     }
 }
